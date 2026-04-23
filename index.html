@@ -2,7 +2,11 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#111111">
 <title>АвтоАксес — Мой склад</title>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -438,18 +442,168 @@ tr:hover td { background: rgba(255,255,255,0.03); }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
 .blink { animation: blink 1.5s infinite; }
 
-/* RESPONSIVE */
+/* RESPONSIVE - MOBILE FIRST */
 @media(max-width:600px) {
-  .header { padding: 0 1rem; }
-  .tab { padding: 12px 10px; font-size: 10px; }
-  .app { padding: 1rem; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
+  .header { padding: 0 0.75rem; gap: 0.5rem; }
+  .tab { padding: 10px 8px; font-size: 10px; letter-spacing: 0.5px; }
+  .app { padding: 0.75rem; }
+  .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .stat { padding: 10px 12px; }
+  .stat-value { font-size: 20px; }
+  .toolbar { gap: 6px; }
+  .toolbar input { font-size: 13px; padding: 8px 10px; }
+  .btn { padding: 8px 12px; font-size: 11px; }
+  .modal { padding: 1.25rem; margin: 0.5rem; max-width: calc(100vw - 1rem) !important; }
+  table { font-size: 12px; }
+  th, td { padding: 8px 8px; }
+  .card { padding: 1rem; }
+  .logo-area { min-width: unset; }
+  .logo-main { font-size: 15px; }
+  .tabs { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .two-col { grid-template-columns: 1fr !important; }
+  .header-right .btn.sm { padding: 4px 7px; font-size: 9px; }
+  #role-badge { font-size: 10px; padding: 3px 7px; }
 }
+@media(max-width:400px) {
+  .stat-value { font-size: 17px; }
+  .tab { padding: 10px 6px; font-size: 9px; }
+}
+
+/* ALARM MODAL */
+.alarm-ring {
+  animation: alarm-pulse 0.5s infinite alternate;
+}
+@keyframes alarm-pulse {
+  from { box-shadow: 0 0 10px var(--red-glow); }
+  to { box-shadow: 0 0 40px var(--red-glow), 0 0 80px var(--red-glow); }
+}
+
+/* DATE BADGE */
+.date-today-badge {
+  display: inline-block;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(232,24,31,0.3);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 0.5px;
+  animation: blink 2s infinite;
+}
+
+/* LOGIN SCREEN */
+#login-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.login-box {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-top: 3px solid var(--red);
+  border-radius: 16px;
+  padding: 2.5rem;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px var(--red-dim);
+}
+.login-logo { font-size: 48px; margin-bottom: 0.5rem; }
+.login-title { font-family: 'Oswald', sans-serif; font-size: 24px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; }
+.login-sub { font-size: 12px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.5rem; }
+.login-pin-dots { display: flex; justify-content: center; gap: 12px; margin: 1rem 0; }
+.pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border2); transition: all 0.2s; }
+.pin-dot.filled { background: var(--red); border-color: var(--red); box-shadow: 0 0 8px var(--red-glow); }
+.login-numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 1rem; }
+.numpad-btn { padding: 16px; font-family: 'Oswald', sans-serif; font-size: 20px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; color: var(--text); cursor: pointer; transition: all 0.15s; }
+.numpad-btn:hover { background: var(--bg4); border-color: var(--red); }
+.numpad-btn:active { transform: scale(0.95); background: var(--red-dim); }
+.numpad-btn.del-btn { font-size: 16px; color: var(--text3); }
+.numpad-btn.empty { background: transparent; border: none; cursor: default; }
+
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- LOGIN SCREEN -->
+<div id="login-screen" style="display:none">
+  <div class="login-box">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">АвтоАксес</div>
+    <div class="login-sub">Мой склад</div>
+    <div id="login-error" style="color:var(--red);font-size:12px;min-height:18px;margin-bottom:6px"></div>
+    <div class="login-pin-dots" id="pin-dots">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+    <div id="login-hint" style="font-size:11px;color:var(--text3);margin-bottom:4px">Введите PIN-код для входа</div>
+    <div class="login-numpad">
+      <button class="numpad-btn" onclick="loginPinPress('1')">1</button>
+      <button class="numpad-btn" onclick="loginPinPress('2')">2</button>
+      <button class="numpad-btn" onclick="loginPinPress('3')">3</button>
+      <button class="numpad-btn" onclick="loginPinPress('4')">4</button>
+      <button class="numpad-btn" onclick="loginPinPress('5')">5</button>
+      <button class="numpad-btn" onclick="loginPinPress('6')">6</button>
+      <button class="numpad-btn" onclick="loginPinPress('7')">7</button>
+      <button class="numpad-btn" onclick="loginPinPress('8')">8</button>
+      <button class="numpad-btn" onclick="loginPinPress('9')">9</button>
+      <button class="numpad-btn empty"></button>
+      <button class="numpad-btn" onclick="loginPinPress('0')">0</button>
+      <button class="numpad-btn del-btn" onclick="loginPinDel()">⌫</button>
+    </div>
+  </div>
+  <div style="font-size:11px;color:var(--text3)">АвтоАксес • Мой склад v2.0</div>
+</div>
+
+<!-- ALARM MODAL -->
+<div class="modal-bg" id="alarm-ring-modal">
+  <div class="modal alarm-ring" style="max-width:340px;text-align:center">
+    <div style="font-size:56px;margin-bottom:8px">⏰</div>
+    <h3 id="alarm-ring-title" style="margin-bottom:8px">Будильник!</h3>
+    <div id="alarm-ring-text" style="font-size:14px;color:var(--text2);margin-bottom:1.5rem"></div>
+    <button class="btn primary" onclick="stopAlarm()" style="width:100%;padding:14px">✓ Остановить</button>
+  </div>
+</div>
+
+<!-- ALARM SETUP MODAL -->
+<div class="modal-bg" id="alarm-modal">
+  <div class="modal" style="max-width:400px">
+    <h3>⏰ Будильники</h3>
+    <div id="alarm-list" style="margin-bottom:1rem"></div>
+    <div style="border-top:1px solid var(--border);padding-top:1rem">
+      <div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">+ Новый будильник</div>
+      <div class="field"><label>Время</label><input type="time" id="alarm-time"></div>
+      <div class="field"><label>Название (необязательно)</label><input type="text" id="alarm-label" placeholder="Позвонить клиенту, открыть склад..."></div>
+      <div class="field"><label>Дни недели</label>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="1"> Пн</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="2"> Вт</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="3"> Ср</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="4"> Чт</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="5"> Пт</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="6"> Сб</label>
+          <label style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text2);cursor:pointer"><input type="checkbox" class="alarm-day" value="0"> Вс</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAlarmModal()">Закрыть</button>
+      <button class="btn primary" onclick="saveAlarm()">+ Добавить</button>
+    </div>
+  </div>
+</div>
+
+
 <div class="header">
   <div class="logo-area">
     <div class="logo-icon">АА</div>
@@ -475,7 +629,9 @@ tr:hover td { background: rgba(255,255,255,0.03); }
     <button class="tab owner-only" onclick="switchTab('purchases')">🛒 Закупки</button>
     <button class="tab owner-only" onclick="switchTab('tasks')">✅ Задачи</button>
   </div>
-  <div style="padding:8px 0;margin-left:auto;display:flex;align-items:center;gap:8px">
+  <div style="padding:8px 0;margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+    <div id="live-clock" style="font-family:'Oswald',sans-serif;font-size:12px;color:var(--text3);letter-spacing:1px;white-space:nowrap"></div>
+    <button class="btn sm" onclick="openAlarmModal()" style="font-size:10px;color:var(--gold);border-color:var(--gold)" title="Будильники" id="alarm-btn">⏰</button>
     <button class="btn sm owner-only" onclick="exportBackup()" style="font-size:10px;color:var(--green);border-color:var(--green)">💾 Бэкап</button>
     <label class="btn sm owner-only" style="font-size:10px;cursor:pointer;margin:0">📂 Импорт<input type="file" accept=".json" onchange="importBackup(event)" style="display:none"></label>
     <button class="btn sm owner-only" onclick="saveToGoogleDrive()" style="font-size:10px;color:#4285f4;border-color:#4285f4" title="Сохранить в Google Drive">☁️ Drive</button>
@@ -2199,7 +2355,7 @@ function renderWarrantyTable(){
   tbody.innerHTML=filtered.map(w=>{
     const days=warrantyDaysLeft(w.endDate);
     const[s,label]=warrantyStatus(days);
-    const daysText=days<0?`<span style="color:var(--red)">Истекла ${Math.abs(days)} дн. назад</span>`:days===0?`<span style="color:var(--orange)">Сегодня!</span>`:`<span style="color:${days<=30?'var(--orange)':'var(--green)'}">${days} дн.</span>`;
+    const daysText=days<0?`<span style="color:var(--red)">Истекла ${Math.abs(days)} дн. назад</span>`:days===0?`<span style="color:var(--red)" class="blink">🔴 СЕГОДНЯ!</span>`:`<span style="color:${days<=7?'var(--red)':days<=30?'var(--orange)':'var(--green)'}">${days} дн.</span>`;
     return`<tr>
       <td style="color:var(--text)">${w.clientName}${w.phone?`<br><span style="font-size:11px;color:var(--text3)">${w.phone}</span>`:''}</td>
       <td style="color:var(--text2)">${w.car}</td>
@@ -3023,8 +3179,290 @@ document.getElementById('today-date-picker').value=new Date().toISOString().slic
   }
 })();
 
+
+// ===== APP VERSION & CACHE BUSTER =====
+const APP_VERSION = '2.0.1';
+if(localStorage.getItem('app_version') !== APP_VERSION) {
+  // Clear only UI cache, keep data
+  localStorage.setItem('app_version', APP_VERSION);
+}
+
+// ===== PIN LOGIN SYSTEM =====
+const APP_PIN_KEY = 'avtoacces_app_pin';
+let loginBuffer = '';
+let loginStep = 'enter'; // 'enter' | 'set1' | 'set2'
+let pinFirstEntry = '';
+let appUnlocked = false;
+
+function initLogin() {
+  const savedPin = localStorage.getItem(APP_PIN_KEY);
+  localStorage.removeItem('_pin_temp'); // чистим незавершённые попытки
+  loginBuffer = '';
+  loginStep = savedPin ? 'enter' : 'set1';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-hint').textContent = savedPin ? 'Введите PIN-код' : 'Придумайте PIN-код (4 цифры)';
+  document.getElementById('login-error').textContent = '';
+  updatePinDots();
+  appUnlocked = false;
+}
+
+function loginPinPress(digit) {
+  if (loginBuffer.length >= 4) return;
+  loginBuffer += digit;
+  updatePinDots();
+  if (loginBuffer.length === 4) {
+    setTimeout(() => checkLoginPin(), 200);
+  }
+}
+
+function loginPinDel() {
+  loginBuffer = loginBuffer.slice(0, -1);
+  updatePinDots();
+  document.getElementById('login-error').textContent = '';
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    document.getElementById('dot-' + i).classList.toggle('filled', i < loginBuffer.length);
+  }
+}
+
+function checkLoginPin() {
+  if (loginStep === 'enter') {
+    // Обычный вход
+    const savedPin = localStorage.getItem(APP_PIN_KEY);
+    if (loginBuffer === savedPin) {
+      unlockApp();
+    } else {
+      document.getElementById('login-error').textContent = '❌ Неверный PIN';
+      loginBuffer = '';
+      updatePinDots();
+      setTimeout(() => { document.getElementById('login-error').textContent = ''; }, 2000);
+    }
+
+  } else if (loginStep === 'set1') {
+    // Первый раз — запоминаем и просим повторить
+    pinFirstEntry = loginBuffer;
+    loginBuffer = '';
+    loginStep = 'set2';
+    updatePinDots();
+    document.getElementById('login-hint').textContent = 'Повторите PIN-код';
+    document.getElementById('login-error').textContent = '';
+
+  } else if (loginStep === 'set2') {
+    // Подтверждение нового PIN
+    if (loginBuffer === pinFirstEntry) {
+      localStorage.setItem(APP_PIN_KEY, loginBuffer);
+      unlockApp();
+    } else {
+      document.getElementById('login-error').textContent = 'PIN не совпадает ❌ Попробуйте снова';
+      loginBuffer = '';
+      pinFirstEntry = '';
+      loginStep = 'set1';
+      updatePinDots();
+      document.getElementById('login-hint').textContent = 'Придумайте PIN-код (4 цифры)';
+    }
+  }
+}
+
+function unlockApp() {
+  appUnlocked = true;
+  loginBuffer = '';
+  pinFirstEntry = '';
+  document.getElementById('login-screen').style.display = 'none';
+  updatePinDots();
+}
+
+// ===== ALARM SYSTEM =====
+let alarms = [];
+let alarmInterval = null;
+let alarmAudio = null;
+let activeAlarmId = null;
+
+function loadAlarms() {
+  try { alarms = JSON.parse(localStorage.getItem('alarms_list') || '[]'); } catch(e) { alarms = []; }
+}
+function saveAlarms() {
+  try { localStorage.setItem('alarms_list', JSON.stringify(alarms)); } catch(e) {}
+}
+loadAlarms();
+
+function openAlarmModal() {
+  renderAlarmList();
+  document.getElementById('alarm-modal').classList.add('open');
+}
+function closeAlarmModal() { document.getElementById('alarm-modal').classList.remove('open'); }
+document.getElementById('alarm-modal').addEventListener('click', function(e) { if(e.target===this) closeAlarmModal(); });
+
+function renderAlarmList() {
+  const el = document.getElementById('alarm-list');
+  if (!alarms.length) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:8px 0">Будильников нет</div>';
+    return;
+  }
+  const dayNames = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  el.innerHTML = alarms.map(a => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <div style="flex:1">
+        <div style="font-family:'Oswald',sans-serif;font-size:20px;color:${a.active?'var(--text)':'var(--text3)'}">⏰ ${a.time}</div>
+        ${a.label ? `<div style="font-size:12px;color:var(--text3)">${a.label}</div>` : ''}
+        ${a.days && a.days.length ? `<div style="font-size:11px;color:var(--text3)">${a.days.map(d=>dayNames[d]).join(', ')}</div>` : '<div style="font-size:11px;color:var(--text3)">Один раз</div>'}
+      </div>
+      <label style="cursor:pointer;position:relative;display:inline-block;width:40px;height:22px">
+        <input type="checkbox" ${a.active?'checked':''} onchange="toggleAlarm(${a.id})" style="opacity:0;width:0;height:0">
+        <span style="position:absolute;inset:0;background:${a.active?'var(--red)':'var(--border2)'};border-radius:22px;transition:0.3s"></span>
+        <span style="position:absolute;left:${a.active?'20':'2'}px;top:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:0.3s"></span>
+      </label>
+      <button class="btn sm del" onclick="deleteAlarm(${a.id})">✕</button>
+    </div>`).join('');
+}
+
+function saveAlarm() {
+  const time = document.getElementById('alarm-time').value;
+  if (!time) { alert('Выберите время'); return; }
+  const label = document.getElementById('alarm-label').value.trim();
+  const days = [...document.querySelectorAll('.alarm-day:checked')].map(c => parseInt(c.value));
+  const alarm = { id: Date.now(), time, label, days, active: true, fired: false };
+  alarms.push(alarm);
+  saveAlarms();
+  document.getElementById('alarm-time').value = '';
+  document.getElementById('alarm-label').value = '';
+  document.querySelectorAll('.alarm-day').forEach(c => c.checked = false);
+  renderAlarmList();
+  updateAlarmBtn();
+}
+
+function toggleAlarm(id) {
+  const a = alarms.find(x => x.id === id);
+  if (a) { a.active = !a.active; a.fired = false; }
+  saveAlarms(); renderAlarmList(); updateAlarmBtn();
+}
+
+function deleteAlarm(id) {
+  alarms = alarms.filter(x => x.id !== id);
+  saveAlarms(); renderAlarmList(); updateAlarmBtn();
+}
+
+function updateAlarmBtn() {
+  const hasActive = alarms.some(a => a.active);
+  const btn = document.getElementById('alarm-btn');
+  if (btn) btn.style.color = hasActive ? 'var(--red)' : 'var(--gold)';
+}
+
+function checkAlarms() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const curTime = hh + ':' + mm;
+  const curDay = now.getDay();
+
+  alarms.forEach(a => {
+    if (!a.active) return;
+    if (a.time !== curTime) { a.fired = false; return; }
+    if (a.fired) return;
+    if (a.days && a.days.length && !a.days.includes(curDay)) return;
+    // RING!
+    a.fired = true;
+    activeAlarmId = a.id;
+    saveAlarms();
+    ringAlarm(a);
+  });
+}
+
+function ringAlarm(alarm) {
+  // Sound via Web Audio API
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq, start, dur) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = freq;
+      o.type = 'square';
+      g.gain.setValueAtTime(0.3, ctx.currentTime + start);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+      o.start(ctx.currentTime + start);
+      o.stop(ctx.currentTime + start + dur + 0.05);
+    }
+    // Alarm melody pattern
+    const pattern = [880,880,880,0,880,0,880,880,880];
+    pattern.forEach((f, i) => { if(f) beep(f, i*0.15, 0.12); });
+    alarmAudio = ctx;
+    // Repeat
+    alarmAudio._interval = setInterval(() => {
+      try {
+        const c2 = new (window.AudioContext || window.webkitAudioContext)();
+        pattern.forEach((f, i) => {
+          if (!f) return;
+          const o = c2.createOscillator(), g = c2.createGain();
+          o.connect(g); g.connect(c2.destination);
+          o.frequency.value = f; o.type = 'square';
+          g.gain.setValueAtTime(0.3, c2.currentTime + i*0.15);
+          g.gain.exponentialRampToValueAtTime(0.001, c2.currentTime + i*0.15 + 0.12);
+          o.start(c2.currentTime + i*0.15); o.stop(c2.currentTime + i*0.15 + 0.2);
+        });
+      } catch(e) {}
+    }, 2000);
+  } catch(e) {}
+
+  // Show modal
+  document.getElementById('alarm-ring-title').textContent = '⏰ ' + alarm.time;
+  document.getElementById('alarm-ring-text').textContent = alarm.label || 'Время!';
+  document.getElementById('alarm-ring-modal').classList.add('open');
+}
+
+function stopAlarm() {
+  if (alarmAudio && alarmAudio._interval) {
+    clearInterval(alarmAudio._interval);
+    alarmAudio = null;
+  }
+  document.getElementById('alarm-ring-modal').classList.remove('open');
+  activeAlarmId = null;
+}
+
+// Start alarm checker
+alarmInterval = setInterval(checkAlarms, 10000);
+checkAlarms();
+updateAlarmBtn();
+
+// ===== TODAY DATE HIGHLIGHT =====
+function getTodayDateString() {
+  return new Date().toLocaleDateString('ru-RU');
+}
+
+function isExpiringSoon(dateStr, days) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  const now = new Date(); now.setHours(0,0,0,0);
+  const diff = Math.round((d - now) / (1000*60*60*24));
+  return diff >= 0 && diff <= days;
+}
+
+function isExpiredToday(dateStr) {
+  if (!dateStr) return false;
+  const d = new Date(dateStr);
+  const now = new Date(); now.setHours(0,0,0,0);
+  return d <= now;
+}
+
+// ===== LIVE CLOCK =====
+function updateClock() {
+  const now = new Date();
+  const el = document.getElementById('live-clock');
+  if (el) {
+    el.textContent = now.toLocaleString('ru-RU', {
+      day: '2-digit', month: '2-digit', year: '2-digit',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+}
+updateClock();
+setInterval(updateClock, 30000);
+
 renderTable();
 applyRole();
+initLogin();
+
 </script>
 </body>
 </html>
